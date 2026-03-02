@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+তোর<!DOCTYPE html>
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
@@ -136,12 +136,12 @@ th {
 
 <header>
   <h1>বাংলাদেশ – রমজান ২০২৬</h1>
-</header>
-
-<div id="timing">
-  <p id="sehri">সেহরি: লোড হচ্ছে...</p>
-  <p id="iftar">ইফতার: লোড হচ্ছে...</p>
-</div>
+</header>  
+  
+       <div id="timing">
+      <p id="sehri">সেহরি: লোড হচ্ছে...</p>
+      <p id="iftar">ইফতার: লোড হচ্ছে...</p>
+       </div>
 
 <table>
   <tr>
@@ -205,3 +205,52 @@ navigator.geolocation.getCurrentPosition(function(position){
 </script>
 </body>
 </html>
+<style>
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+
+  /* ব্যাকগ্রাউন্ড ছবি */
+  background: url('https://images.unsplash.com/photo-1609476671522-5c02e55d92b7?auto=format&fit=crop&w=1950&q=80') 
+              no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Container spacing + dark overlay */
+.container {
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 12px;
+}
+
+/* Headings */
+h1 {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid white;
+  padding: 12px;
+  text-align: center;
+}
+
+th {
+  background: #145a44;
+}
+</style>
