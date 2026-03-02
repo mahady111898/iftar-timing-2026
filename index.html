@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAMADAN MUBARAK</title>
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:url("https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=1950&q=80") no-repeat center center fixed;
+  background-size:cover;
+  color:#fff;
+}
+.overlay{
+  min-height:100vh;
+  background:rgba(0,0,0,.65);
+  padding:20px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+h1{
+  font-size:38px;
+  letter-spacing:3px;
+  color:#f5c542;
+}
+.time{
+  font-size:42px;
+  margin:10px 0;
+  color:#f5c542;
+}
+.box{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+.card{
+  width:48%;
+  padding:15px;
+  border-radius:15px;
+  background:rgba(0,0,0,.6);
+  margin-bottom:10px;
+}
+.green{color:#2ecc71;font-size:22px;}
+.red{color:#e74c3c;font-size:22px;}
+audio{width:100%;margin-top:10px;}
+.tasbeeh button{
+  padding:12px 20px;
+  margin:5px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+}
+.count{font-size:22px;margin-top:5px;}
+.niyat{
+  margin-top:20px;
+  font-size:20px;
+  background:rgba(0,0,0,0.5);
+  padding:15px;
+  border-radius:10px;
+}
+.footer{
+  margin-top:30px;
+  font-size:18px;
+  color:#f5c542;
+}
+</style>
+</head>
+
+<body onload="getLocation()">
+
+<div class="overlay">
+
+<h1>RAMADAN MUBARAK</h1>
+<div id="date"></div>
+<div class="time" id="clock">--:--</div>
+
+<div class="box">
+  <div class="card">
+    <div>সেহরি শেষ</div>
+    <div class="green" id="sehri">--</div>
+  </div>
+  <div class="card">
+    <div>ইফতার শুরু</div>
+    <div class="red" id="iftar">--</div>
+  </div>
+</div>
+
+<h3 style="margin-top:25px;">সূরা রহমান শুনুন</h3>
+<audio id="rahmanaudio" preload="auto" controls>
+  <source src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/055.mp3" type="audio/mpeg">
+  আপনার ব্রাউজার অডিও সাপোর্ট করে না
+</audio>
+<h3 style="margin-top:25px;">সূরা রহমান শুনুন</h3>
+<audio id="rahmanaudio" preload="auto" controls>
+  <source src="https://cdn.islamic.network/quran/audio/128/ar.alafasy/055.mp3" type="audio/mpeg">
+  আপনার ব্রাউজার অডিও সাপোর্ট করে না
+</audio>
+
+<h3 style="margin-top:25px;">তসবিহ</h3>
+<div class="tasbeeh">
+  <button onclick="subhan()">সুবহানাল্লাহ</button>
+  <button onclick="laillah()">লা ইলাহা ইল্লাল্লাহ</button>
+  <button onclick="resetTasbeeh()">🔄 রিসেট</button>
+  <div class="count" id="count">0</div>
+</div>
+
+<div class="niyat">
+  <strong>নিয়াত / نية</strong><br>
+  আমি রোজা রাখার নিয়ত করছি।<br>
+  أُصَوِّمُ صَوْمَ غَدٍ لِلَّهِ تَعَالَى
+</div>
+
+<div class="footer">E.S.MAHADY</div>
+
+</div>
+
+<script>
+function updateClock(){
+  const now=new Date();
+  document.getElementById("clock").innerHTML=
+    now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById("date").innerHTML=
+    now.toLocaleDateString('bn-BD',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+setInterval(updateClock,1000);
+
+function getLocation() {
+  if (!navigator.geolocation) {
+    alert("লোকেশন সাপোর্ট করে না");
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos => { loadTimings(pos.coords.latitude, pos.coords.longitude); },
+    err => { loadTimings(23.8103, 90.4125); }, // BD default
+    { enableHighAccuracy:false, timeout:10000, maximumAge:600000 }
+  );
+}
+
+function loadTimings(lat, lon) {
+  fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`)
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById("sehri").innerText="সেহরি শেষ: "+d.data.timings.Fajr;
+      document.getElementById("iftar").innerText="ইফতার শুরু: "+d.data.timings.Maghrib;
+    });
+}
+
+let c=0;
+function subhan(){ c++; document.getElementById("count").innerText=c; }
+function laillah(){ c++; document.getElementById("count").innerText=c; }
+function resetTasbeeh(){ c=0; document.getElementById("count").innerText=c; }
+</script>
+
+</body>
+</html>
