@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramadan Mubarak</title>
+<style>
+body{margin:0;font-family:Arial;background:#0b0f1a;color:#fff;text-align:center;}
+.container{padding:20px;max-width:500px;margin:auto;}
+h1{color:#f5c542;}
+.time{font-size:40px;color:#f5c542;margin:5px;}
+.box{background:rgba(255,255,255,0.08);border-radius:12px;padding:15px;margin:12px 0;}
+.green{color:#00ff9c;}
+.red{color:#ff6b6b;}
+button{padding:10px 18px;border:none;border-radius:8px;background:#20c997;color:white;margin:5px;cursor:pointer;}
+footer{margin-top:20px;opacity:.7;}
+</style>
+</head>
+<body onload="getLocation()">
+
+<div class="container">
+
+<h1>RAMADAN MUBARAK</h1>
+
+<div class="box">
+<div id="date"></div>
+<div class="time" id="clock">00:00:00</div>
+<div id="ramadanDay"></div>
+</div>
+
+<div class="box">
+<h3>সেহরি শেষ হতে বাকি</h3>
+<div class="green" id="sehriLeft">--</div>
+<div>সময়: <span id="sehriTime">--</span></div>
+</div>
+
+<div class="box">
+<h3>ইফতার শুরু হতে বাকি</h3>
+<div class="red" id="iftarLeft">--</div>
+<div>সময়: <span id="iftarTime">--</span></div>
+</div>
+
+<div class="box">
+<h3>সূরা রহমান শুনুন</h3>
+<audio id="surah">
+<source src="https://download.quranicaudio.com/quran/abdul_basit_murattal/055.mp3" type="audio/mpeg">
+</audio>
+<button onclick="playAudio()">▶ প্লে</button>
+</div>
+
+<div class="box">
+<h3>তসবিহ কাউন্টার</h3>
+<button onclick="tasbih()">তসবিহ পড়ুন</button>
+<button onclick="resetTasbih()">রিসেট</button>
+<div id="count">0</div>
+</div>
+
+<div class="box">
+<h3>রোজার নিয়ত</h3>
+<p>نَوَيْتُ صَوْمَ غَدٍ مِنْ شَهْرِ رَمَضَانَ</p>
+<p>বাংলা উচ্চারণ: নাওয়াইতু সাওমা ঘাদিন মিন শাহরি রমজান</p>
+</div>
+
+<div class="box">
+<h3>ইফতার দোয়া</h3>
+<p>اللَّهُمَّ إِنِّي لَكَ صُمْتُ</p>
+<p>বাংলা উচ্চারণ: আল্লাহুম্মা ইন্নি লাকা সুমতু</p>
+</div>
+
+<div class="box">
+<h3>৫ ওয়াক্ত নামাজ</h3>
+<div>ফজর: <span id="fajr">--</span></div>
+<div>যোহর: <span id="dhuhr">--</span></div>
+<div>আসর: <span id="asr">--</span></div>
+<div>মাগরিব: <span id="maghrib">--</span></div>
+<div>ইশা: <span id="isha">--</span></div>
+</div>
+
+<footer>E.S.MAHADY</footer>
+
+</div>
+
+<script>
+// লাইভ ঘড়ি
+function updateClock(){
+const now=new Date();
+document.getElementById("clock").innerText=now.toLocaleTimeString('en-GB');
+document.getElementById("date").innerText=now.toLocaleDateString('bn-BD',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// লোকেশন
+let sehriTime="",iftarTime="";
+function getLocation(){
+if(navigator.geolocation){
+navigator.geolocation.getCurrentPosition(
+pos=>loadTimings(pos.coords.latitude,pos.coords.longitude),
+()=>loadTimings(23.8103,90.4125)
+);
+}else{
+loadTimings(23.8103,90.4125);
+}
+}
+
+// Aladhan API
+function loadTimings(lat,lon){
+fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`)
+.then(r=>r.json())
+.then(d=>{
+sehriTime=d.data.timings.Fajr;
+iftarTime=d.data.timings.Maghrib;
+document.getElementById("sehriTime").innerText=sehriTime;
+document.getElementById("iftarTime").innerText=iftarTime;
+document.getElementById("fajr").innerText=d.data.timings.Fajr;
+document.getElementById("dhuhr").innerText=d.data.timings.Dhuhr;
+document.getElementById("asr").innerText=d.data.timings.Asr;
+document.getElementById("maghrib").innerText=d.data.timings.Maghrib;
+document.getElementById("isha").innerText=d.data.timings.Isha;
+});
+}
+
+// Countdown
+function countdown(target,el){
+if(!target)return;
+const now=new Date();
+let t=new Date(now.toDateString()+" "+target);
+if(t<now)t.setDate(t.getDate()+1);
+const diff=t-now;
+const h=Math.floor(diff/3600000);
+const m=Math.floor((diff/60000)%60);
+const s=Math.floor((diff/1000)%60);
+document.getElementById(el).innerText=`${h}h ${m}m ${s}s`;
+}
+setInterval(()=>{
+countdown(sehriTime,"sehriLeft");
+countdown(iftarTime,"iftarLeft");
+},1000);
+
+// সূরা রহমান প্লে
+function playAudio(){document.getElementById("surah").play();}
+
+// তসবিহ
+let c=0;
+function tasbih(){c++;document.getElementById("count").innerText=c;}
+function resetTasbih(){c=0;document.getElementById("count").innerText=c;}
+
+// আজান অটো প্লে
+let playedSehri=false,playedIftar=false;
+setInterval(()=>{
+const now=new Date();
+const hh=now.getHours().toString().padStart(2,'0');
+const mm=now.getMinutes().toString().padStart(2,'0');
+const ss=now.getSeconds().toString().padStart(2,'0');
+const timeStr=`${hh}:${mm}:${ss}`;
+if(sehriTime && timeStr===sehriTime && !playedSehri){
+document.getElementById("surah").play();
+playedSehri=true;
+}
+if(iftarTime && timeStr===iftarTime && !playedIftar){
+document.getElementById("surah").play();
+playedIftar=true;
+}
+},1000);
+
+// রমজান দিন
+function ramadanDay(){
+const start=new Date("2026-02-18");
+const today=new Date();
+const diff=Math.floor((today-start)/(1000*60*60*24))+1;
+document.getElementById("ramadanDay").innerText="আজ "+diff+" তম রমজান";
+}
+ramadanDay();
+
+</script>
+</body>
+</html>
