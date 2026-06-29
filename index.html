@@ -164,31 +164,7 @@ playedIftar=true;
 },1000);
 
 // রমজান দিন
-function ramadanDay() {
-  const start = new Date("2027-02-08");
-  const end = new Date("2027-03-09");
 
-  const today = new Date();
-  start.setHours(0,0,0,0);
-  end.setHours(23,59,59,999);
-  today.setHours(0,0,0,0);
-
-  if (today < start || today > end) {
-    document.getElementById("ramadanDay").innerText = "আজ রমজান মাস নয়";
-
-    document.getElementById("sehriBox").style.display = "none";
-    document.getElementById("iftarBox").style.display = "none";
-
-    return;
-diffiffnstnst
-  document.getElementById("sehriBox").style.display = "block";
-document.getElementById("iftarBox").style.display = "blodiff
-  
-  const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
-  document.getElementById("ramadanDay").innerText = `আজ ${diff} তম রমজান`;
-}
-
-ramadanDay();
 </script>
 </body>
 </html>
