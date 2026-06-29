@@ -28,13 +28,13 @@ footer{margin-top:20px;opacity:.7;}
 <div id="ramadanDay"></div>
 </div>
 
-<div class="box">
+<div class="box" id="sehriBox">
 <h3>সেহরি শেষ হতে বাকি</h3>
 <div class="green" id="sehriLeft">--</div>
 <div>সময়: <span id="sehriTime">--</span></div>
 </div>
 
-<div class="box">
+<div class="box" id="iftarBox">
 <h3>ইফতার শুরু হতে বাকি</h3>
 <div class="red" id="iftarLeft">--</div>
 <div>সময়: <span id="iftarTime">--</span></div>
@@ -58,7 +58,7 @@ footer{margin-top:20px;opacity:.7;}
 <div class="box">
 <h3>রোজার নিয়ত</h3>
 <p>نَوَيْتُ صَوْمَ غَدٍ مِنْ شَهْرِ رَمَضَانَ</p>
-<p>বাংলা উচ্চারণ: নাওয়াইতু সাওমা ঘাদিন মিন শাহরি রমজান</p>
+<p>বাংলা উচ্চারণ: নাওয়াইতু সাওমা ঘাদিন মিন শdivি রমজান</p>
 </div>
 
 <div class="box">
@@ -175,9 +175,15 @@ function ramadanDay() {
 
   if (today < start || today > end) {
     document.getElementById("ramadanDay").innerText = "আজ রমজান মাস নয়";
-    return;
-  }
 
+    document.getElementById("sehriBox").style.display = "none";
+    document.getElementById("iftarBox").style.display = "none";
+
+    return;
+diffiffnstnst
+  document.getElementById("sehriBox").style.display = "block";
+document.getElementById("iftarBox").style.display = "blodiff
+  
   const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
   document.getElementById("ramadanDay").innerText = `আজ ${diff} তম রমজান`;
 }
